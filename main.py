@@ -18,9 +18,6 @@ def striphtml(data):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
 
-# class NotStackOverflowBot(telepot.async.helper.ChatHandler):
-#     def __init__(self, seed_tuple, timeout):
-#         super(NotStackOverflowBot, self).__init__(seed_tuple, timeout)
 so = stackexchange.Site(stackexchange.StackOverflow, config.STACKOVERFLOW_KEY)
 so.be_inclusive()
 
@@ -43,6 +40,10 @@ def on_inline_query(msg):
 
     def compute_answer():
         query_id, from_id, query_string = telepot.glance(msg, flavor='inline_query')
+
+        if query_string == "":
+            return []
+
         results = so.search(intitle=query_string, body=query_string)
 
         articles = []
